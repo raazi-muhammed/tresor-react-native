@@ -13,9 +13,9 @@ export default function Heading({
 }) {
     switch (variant) {
         case "main":
-            return <Text style={[style, styles.main]}>{children}</Text>;
+            return <Text style={[styles.main, style]}>{children}</Text>;
         default:
-            return <Text style={[style, styles.default]}>{children}</Text>;
+            return <Text style={[styles.default, style]}>{children}</Text>;
     }
 }
 
@@ -23,13 +23,11 @@ const styles = StyleSheet.create({
     main: {
         fontSize: 32,
         fontWeight: "bold",
-        marginBottom: 8,
         color: COLORS.primary,
     },
     default: {
         fontSize: 24,
         fontWeight: "bold",
-        marginBottom: 8,
         color: COLORS.foreground,
     },
 });

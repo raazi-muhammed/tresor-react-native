@@ -29,6 +29,13 @@ CREATE TABLE IF NOT EXISTS images (
     width INTEGER NOT NULL,
     FOREIGN KEY (document_id) REFERENCES documents(id)
   );
+CREATE TABLE IF NOT EXISTS fields (
+    field_id INTEGER PRIMARY KEY NOT NULL, 
+    document_id INTEGER NOT NULL, 
+    key TEXT NOT NULL, 
+    value TEXT NOT NULL, 
+    FOREIGN KEY (document_id) REFERENCES documents(id)
+  );
 `);
         currentDbVersion = 1;
     }

@@ -9,13 +9,13 @@ import {
 } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
 import { COLORS } from "../../styles/colors";
-import { Document } from "../../screens/HomeScreen";
+import { IDocument } from "../../types/entities";
 
 export default function DocumentInfo({
     document,
     onPress,
 }: {
-    document: Document;
+    document: IDocument;
     onPress: (e: GestureResponderEvent) => void;
 }) {
     return (
@@ -26,7 +26,9 @@ export default function DocumentInfo({
             />
             <View style={{ flexGrow: 1 }}>
                 <Text style={styles.header}>{document.title}</Text>
-                <Text style={styles.caption}>{document.caption}</Text>
+                {!!document.caption && (
+                    <Text style={styles.caption}>{document.caption}</Text>
+                )}
             </View>
             <Entypo name="chevron-small-right" size={24} color={COLORS.muted} />
         </Pressable>

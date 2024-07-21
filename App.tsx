@@ -7,6 +7,7 @@ import AddDocument from "./components/custom/AddDocument";
 import { COLORS } from "./styles/colors";
 import { DbProvider } from "./db/Provider";
 import { IDocument } from "./types/entities";
+import { Text } from "react-native";
 
 export type ParamListBase = {
     Tresor: {};
@@ -38,6 +39,9 @@ export default function App() {
                         component={DocumentInfo as any}
                         options={({ route }) => ({
                             title: route.params.doc.title,
+                            headerRight: () => (
+                                <Text>{route.params.doc.id}</Text>
+                            ),
                         })}
                     />
                 </Stack.Navigator>
