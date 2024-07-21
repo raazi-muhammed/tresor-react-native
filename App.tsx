@@ -1,51 +1,46 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
-import DocumentInfo from "./components/custom/DocumentCard";
+import React, { useEffect, useState } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import HomeScreen, { Document } from "./screens/HomeScreen";
+import DocumentInfo from "./screens/DocumentInfo";
 import AddDocument from "./components/custom/AddDocument";
 import { COLORS } from "./styles/colors";
-import Heading from "./components/general/Heading";
+import { DbProvider } from "./db/Provider";
 
-export type Document = {
-    id: string;
-    title: string;
-    caption?: string;
-    images: {
-        uri: string;
-    }[];
+export type ParamListBase = {
+    Tresor: {};
+    Info: {
+        doc: Document;
+    };
 };
+
+const Stack = createNativeStackNavigator<ParamListBase>();
+
 export default function App() {
-    const [documents, setDocuments] = useState<Document[]>([
-        {
-            id: "1",
-            title: "Credit Card",
-            caption: "card ending with 3122",
-            images: [
-                {
-                    uri: "null",
-                },
-            ],
-        },
-    ]);
-
-    function addDocument(data: Document) {
-        const d = documents;
-        d.push(data);
-        setDocuments([...d]);
-    }
-
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-            <StatusBar />
-            <View style={{ padding: 12 }}>
-                <AddDocument addDocument={addDocument} />
-                <Heading variant="main">Tresor</Heading>
-                <ScrollView>
-                    {documents.map((doc, index) => (
-                        <DocumentInfo key={index} document={doc} />
-                    ))}
-                </ScrollView>
-            </View>
-        </SafeAreaView>
+        <DbProvider>
+            <NavigationContainer>
+                <Stack.Navigator initialRouteName="Tresor">
+                    <Stack.Screen
+                        name="Tresor"
+                        component={HomeScreen as any}
+                        options={{
+                            headerLargeTitle: true,
+                            headerTitleStyle: {
+                                color: COLORS.primary,
+                            },
+                            headerRight: () => <AddDocument />,
+                        }}
+                    />
+                    <Stack.Screen
+                        name="Info"
+                        component={DocumentInfo as any}
+                        options={({ route }) => ({
+                            title: route.params.doc.title,
+                        })}
+                    />
+                </Stack.Navigator>
+            </NavigationContainer>
+        </DbProvider>
     );
 }

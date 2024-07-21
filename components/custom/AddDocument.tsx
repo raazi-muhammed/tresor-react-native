@@ -9,19 +9,18 @@ import {
     Text,
 } from "react-native";
 import React, { useState } from "react";
-import { Document } from "../../App";
 import Entypo from "@expo/vector-icons/Entypo";
 import { COLORS } from "../../styles/colors";
 import { STYLE_SYSTEM } from "../../styles/styleSystem";
 import Heading from "../general/Heading";
 import Button from "../general/Button";
 import ImageSelector from "./ImageSelector";
+import { useSQLiteContext } from "expo-sqlite";
+import { Document } from "../../screens/HomeScreen";
 
-export default function AddDocument({
-    addDocument,
-}: {
-    addDocument: (data: Document) => void;
-}) {
+export default function AddDocument() {
+    const db = useSQLiteContext();
+
     const [isModelVisible, setIsModelVisible] = useState(false);
     const [title, setTitle] = useState("tet");
     const [caption, setCaption] = useState("");
@@ -30,7 +29,17 @@ export default function AddDocument({
     const [backImage, setBackImage] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    const handleAddDocument = () => {
+    async function addDocument(data: Document) {
+        await db.runAsync(
+            "INSERT INTO documents (title, caption, imageFront, imageBack) VALUES (?, ?, ?, ?)",
+            data.title,
+            data.caption || "",
+            data.imageFront,
+            data.imageBack || ""
+        );
+    }
+
+    const handleAddDocument = async () => {
         if (!title) {
             setError("Invalid name");
             return;
@@ -40,18 +49,17 @@ export default function AddDocument({
             return;
         }
 
-        const images = [{ uri: frontImage }];
-        if (backImage) images.push({ uri: backImage });
-
-        addDocument({
-            id: Date.now().toString(),
-            caption,
-            images,
+        await addDocument({
             title,
+            caption,
+            id: Date.now().toString(),
+            imageFront: frontImage,
+            imageBack: backImage ? backImage : undefined,
         });
+
         setError(null);
         setIsModelVisible(false);
-        setTitle("");
+        setTitle("test");
         setCaption("");
         setFrontImage(null);
         setBackImage(null);
