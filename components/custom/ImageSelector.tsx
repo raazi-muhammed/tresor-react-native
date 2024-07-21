@@ -4,15 +4,16 @@ import * as ImagePicker from "expo-image-picker";
 import { STYLE_SYSTEM } from "../../styles/styleSystem";
 import { COLORS } from "../../styles/colors";
 import Entypo from "@expo/vector-icons/Entypo";
+import { IImage } from "../../types/entities";
 
 export default function ImageSelector({
     image,
     setImage,
     title,
 }: {
-    image: string | null;
+    image: IImage | null;
     title: string;
-    setImage: React.Dispatch<React.SetStateAction<string | null>>;
+    setImage: React.Dispatch<React.SetStateAction<IImage | null>>;
 }) {
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -20,14 +21,14 @@ export default function ImageSelector({
             quality: 1,
         });
         if (!result.canceled) {
-            setImage(result.assets[0].uri);
+            setImage(result.assets[0]);
         }
     };
     return (
         <Pressable style={styles.container} onPress={pickImage}>
             {image ? (
                 <View>
-                    <Image source={{ uri: image }} style={styles.image} />
+                    <Image source={{ uri: image.uri }} style={styles.image} />
                     <Pressable
                         style={{
                             position: "absolute",

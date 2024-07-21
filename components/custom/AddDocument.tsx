@@ -16,7 +16,7 @@ import Heading from "../general/Heading";
 import Button from "../general/Button";
 import ImageSelector from "./ImageSelector";
 import { useSQLiteContext } from "expo-sqlite";
-import { Document } from "../../screens/HomeScreen";
+import { IImage } from "../../types/entities";
 
 export default function AddDocument() {
     const db = useSQLiteContext();
@@ -25,19 +25,9 @@ export default function AddDocument() {
     const [title, setTitle] = useState("tet");
     const [caption, setCaption] = useState("");
 
-    const [frontImage, setFrontImage] = useState<string | null>(null);
-    const [backImage, setBackImage] = useState<string | null>(null);
+    const [frontImage, setFrontImage] = useState<IImage | null>(null);
+    const [backImage, setBackImage] = useState<IImage | null>(null);
     const [error, setError] = useState<string | null>(null);
-
-    async function addDocument(data: Document) {
-        await db.runAsync(
-            "INSERT INTO documents (title, caption, imageFront, imageBack) VALUES (?, ?, ?, ?)",
-            data.title,
-            data.caption || "",
-            data.imageFront,
-            data.imageBack || ""
-        );
-    }
 
     const handleAddDocument = async () => {
         if (!title) {
@@ -49,13 +39,29 @@ export default function AddDocument() {
             return;
         }
 
-        await addDocument({
+        const documentResult = await db.runAsync(
+            "INSERT INTO documents (title, caption) VALUES (?, ?)",
             title,
-            caption,
-            id: Date.now().toString(),
-            imageFront: frontImage,
-            imageBack: backImage ? backImage : undefined,
-        });
+            caption || ""
+        );
+
+        await db.runAsync(
+            "INSERT INTO images (document_id, uri, height, width) VALUES (?, ?, ?, ?)",
+            documentResult.lastInsertRowId,
+            frontImage.uri,
+            frontImage.height,
+            frontImage.width
+        );
+
+        if (backImage) {
+            await db.runAsync(
+                "INSERT INTO images (document_id, uri, height, width) VALUES (?, ?, ?, ?)",
+                documentResult.lastInsertRowId,
+                backImage.uri,
+                backImage.height,
+                backImage.width
+            );
+        }
 
         setError(null);
         setIsModelVisible(false);

@@ -21,7 +21,7 @@ export default function DocumentInfo({
     return (
         <Pressable style={styles.card} onPress={onPress}>
             <Image
-                source={{ uri: document.imageFront }}
+                source={{ uri: document.uri }}
                 style={{ width: 48, height: 48, flexGrow: 0, borderRadius: 8 }}
             />
             <View style={{ flexGrow: 1 }}>

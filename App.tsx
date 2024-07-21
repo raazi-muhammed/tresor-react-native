@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen, { Document } from "./screens/HomeScreen";
+import HomeScreen from "./screens/HomeScreen";
 import DocumentInfo from "./screens/DocumentInfo";
 import AddDocument from "./components/custom/AddDocument";
 import { COLORS } from "./styles/colors";
 import { DbProvider } from "./db/Provider";
+import { IDocument } from "./types/entities";
 
 export type ParamListBase = {
     Tresor: {};
     Info: {
-        doc: Document;
+        doc: IDocument;
     };
 };
 
