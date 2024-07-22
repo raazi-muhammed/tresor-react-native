@@ -8,6 +8,7 @@ export type IDocument = {
 };
 
 export type IImage = {
+    image_id?: number;
     uri: string;
     height: number;
     width: number;

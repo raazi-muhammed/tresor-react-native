@@ -10,6 +10,7 @@ import { COLORS } from "../styles/colors";
 import Feather from "@expo/vector-icons/Feather";
 import Heading from "../components/general/Heading";
 import * as Clipboard from "expo-clipboard";
+import ImagesViewer from "../components/custom/ImagesViewer";
 
 export default function DocumentInfo({
     route,
@@ -50,21 +51,7 @@ export default function DocumentInfo({
 
     return (
         <View style={{ padding: STYLE_SYSTEM.paddingLg }}>
-            <Text>{doc.title}</Text>
-            <Text>{doc.caption}</Text>
-            <View style={{ flexDirection: "row", gap: STYLE_SYSTEM.padding }}>
-                {images.map((img) => (
-                    <Image
-                        source={{ uri: img.uri }}
-                        style={{
-                            width: "50%",
-                            borderRadius: STYLE_SYSTEM.borderRadius,
-                            aspectRatio: (img.width || 1) / (img.height || 1),
-                            flex: 1,
-                        }}
-                    />
-                ))}
-            </View>
+            <ImagesViewer images={images} />
             <FlatList
                 data={fields}
                 ListHeaderComponent={() => (
@@ -106,9 +93,7 @@ export default function DocumentInfo({
                             </Text>
                             <Text style={{ fontSize: 18 }}>{item.value}</Text>
                         </View>
-                        <Pressable
-                            onPress={() => copyToClipboard(item.value)}
-                            style={{ alignSelf: "center" }}>
+                        <Pressable style={{ alignSelf: "center" }}>
                             <Feather
                                 name="copy"
                                 size={22}
