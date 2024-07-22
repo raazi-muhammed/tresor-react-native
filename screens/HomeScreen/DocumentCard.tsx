@@ -8,8 +8,8 @@ import {
     View,
 } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
-import { COLORS } from "../../styles/colors";
-import { IDocument } from "../../types/entities";
+import { COLORS } from "@styles/colors";
+import { IDocument } from "@app/types/entities";
 
 export default function DocumentInfo({
     document,

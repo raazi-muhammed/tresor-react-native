@@ -1,10 +1,10 @@
 import { Alert, Pressable } from "react-native";
 import React from "react";
-import { COLORS } from "../../styles/colors";
-import { STYLE_SYSTEM } from "../../styles/styleSystem";
+import { COLORS } from "@styles/colors";
+import { STYLE_SYSTEM } from "@styles/styleSystem";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useSQLiteContext } from "expo-sqlite";
-import { IField } from "../../types/entities";
+import { IField } from "@app/types/entities";
 
 export default function DeleteField({
     field,

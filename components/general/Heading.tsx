@@ -1,6 +1,6 @@
 import { StyleProp, StyleSheet, Text, TextStyle } from "react-native";
 import React from "react";
-import { COLORS } from "../../styles/colors";
+import { COLORS } from "@styles/colors";
 
 export default function Heading({
     children,

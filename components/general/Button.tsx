@@ -1,7 +1,7 @@
 import { GestureResponderEvent, Text, TouchableOpacity } from "react-native";
 import React from "react";
-import { COLORS } from "../../styles/colors";
-import { STYLE_SYSTEM } from "../../styles/styleSystem";
+import { COLORS } from "@styles/colors";
+import { STYLE_SYSTEM } from "@styles/styleSystem";
 
 export default function Button({
     onPress,

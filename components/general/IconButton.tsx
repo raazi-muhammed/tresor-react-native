@@ -2,13 +2,12 @@ import {
     StyleSheet,
     Pressable,
     GestureResponderEvent,
-    PressableProps,
     StyleProp,
     ViewStyle,
 } from "react-native";
 import React from "react";
 import Entypo from "@expo/vector-icons/Entypo";
-import { COLORS } from "../../styles/colors";
+import { COLORS } from "@styles/colors";
 
 export default function IconButton({
     onPress,

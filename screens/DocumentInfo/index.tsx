@@ -1,12 +1,12 @@
 import { View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { RouteProp } from "@react-navigation/native";
-import { ParamListBase } from "../App";
-import { STYLE_SYSTEM } from "../styles/styleSystem";
+import { ParamListBase } from "../../App";
+import { STYLE_SYSTEM } from "@styles/styleSystem";
 import { useSQLiteContext } from "expo-sqlite";
-import { IImage } from "../types/entities";
-import ImagesViewer from "../components/custom/ImagesViewer";
-import Fields from "../components/custom/Fields";
+import { IImage } from "@app/types/entities";
+import ImagesViewer from "@components/image/ImagesViewer";
+import Fields from "./Fields";
 
 export default function DocumentInfo({
     route,

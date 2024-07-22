@@ -1,6 +1,6 @@
 import { StyleSheet, TextInput as TextInputDefault } from "react-native";
-import { COLORS } from "../../styles/colors";
-import { STYLE_SYSTEM } from "../../styles/styleSystem";
+import { COLORS } from "@styles/colors";
+import { STYLE_SYSTEM } from "@styles/styleSystem";
 import { Dispatch } from "react";
 
 export default function TextInput({

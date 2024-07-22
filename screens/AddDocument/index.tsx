@@ -10,15 +10,15 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import Entypo from "@expo/vector-icons/Entypo";
-import { COLORS } from "../../styles/colors";
-import { STYLE_SYSTEM } from "../../styles/styleSystem";
-import Heading from "../general/Heading";
-import Button from "../general/Button";
-import ImageSelector from "./ImageSelector";
+import { COLORS } from "@styles/colors";
+import { STYLE_SYSTEM } from "@styles/styleSystem";
+import Heading from "@components/general/Heading";
+import Button from "@components/general/Button";
+import ImageSelector from "@components/image/ImageSelector";
 import { useSQLiteContext } from "expo-sqlite";
-import { IImage } from "../../types/entities";
-import IconButton from "../general/IconButton";
-import TextInput from "../general/TextInput";
+import { IImage } from "@app/types/entities";
+import IconButton from "@components/general/IconButton";
+import TextInput from "@components/general/TextInput";
 
 export default function AddDocument() {
     const db = useSQLiteContext();

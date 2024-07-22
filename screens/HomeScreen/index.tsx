@@ -1,16 +1,16 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
-import { Button, FlatList, SafeAreaView, Text, View } from "react-native";
-import DocumentInfo from "../components/custom/DocumentCard";
+import { FlatList, SafeAreaView, Text, View } from "react-native";
+import DocumentInfo from "./DocumentCard";
 import { useSQLiteContext } from "expo-sqlite";
-import { IDocument } from "../types/entities";
+import { IDocument } from "@app/types/entities";
 import {
     GestureHandlerRootView,
     Swipeable,
 } from "react-native-gesture-handler";
-import { STYLE_SYSTEM } from "../styles/styleSystem";
-import DeleteDocument from "../components/custom/DeleteDocument";
-import { COLORS } from "../styles/colors";
+import { STYLE_SYSTEM } from "@styles/styleSystem";
+import DeleteDocument from "./DeleteDocument";
+import { COLORS } from "@styles/colors";
 
 export default function HomeScreen({ navigation }: { navigation: any }) {
     const db = useSQLiteContext();

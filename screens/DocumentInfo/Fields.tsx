@@ -4,12 +4,12 @@ import * as Clipboard from "expo-clipboard";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { View, Text, Pressable, FlatList } from "react-native";
-import { STYLE_SYSTEM } from "../../styles/styleSystem";
-import Heading from "../general/Heading";
-import AddField from "./AddField";
-import { IDocument, IField, IImage } from "../../types/entities";
+import { STYLE_SYSTEM } from "@styles/styleSystem";
+import Heading from "@components/general/Heading";
+import AddField from "../AddField";
+import { IDocument, IField, IImage } from "@app/types/entities";
 import DeleteField from "./DeleteField";
-import { COLORS } from "../../styles/colors";
+import { COLORS } from "@styles/colors";
 import { useSQLiteContext } from "expo-sqlite";
 import Animated, {
     useAnimatedStyle,
@@ -21,7 +21,7 @@ import Animated, {
 function Field({ field }: { field: IField }) {
     const scale = useSharedValue(1);
 
-    const timeout = useRef<NodeJS.Timeout>();
+    const timeout = useRef<ReturnType<typeof setTimeout>>();
     const copyToClipboard = async (data: string) => {
         clearTimeout(timeout.current);
         scale.value = withDelay(500, withTiming(0));
