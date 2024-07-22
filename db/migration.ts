@@ -27,14 +27,14 @@ CREATE TABLE IF NOT EXISTS images (
     uri TEXT NOT NULL, 
     height INTEGER NOT NULL, 
     width INTEGER NOT NULL,
-    FOREIGN KEY (document_id) REFERENCES documents(id)
+    FOREIGN KEY (document_id) REFERENCES documents(id) ON DELETE CASCADE
   );
 CREATE TABLE IF NOT EXISTS fields (
     field_id INTEGER PRIMARY KEY NOT NULL, 
     document_id INTEGER NOT NULL, 
     key TEXT NOT NULL, 
     value TEXT NOT NULL, 
-    FOREIGN KEY (document_id) REFERENCES documents(id)
+    FOREIGN KEY (document_id) REFERENCES documents(id) ON DELETE CASCADE
   );
 `);
         currentDbVersion = 1;

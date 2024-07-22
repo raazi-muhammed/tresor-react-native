@@ -4,7 +4,7 @@ import { migrateDbIfNeeded } from "./migration";
 
 export function DbProvider({ children }: { children: ReactNode }) {
     return (
-        <SQLiteProvider databaseName="test13.db" onInit={migrateDbIfNeeded}>
+        <SQLiteProvider databaseName="test17.db" onInit={migrateDbIfNeeded}>
             {children}
         </SQLiteProvider>
     );
