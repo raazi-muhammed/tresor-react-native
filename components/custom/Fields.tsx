@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Feather from "@expo/vector-icons/Feather";
 import * as Clipboard from "expo-clipboard";
 import Swipeable from "react-native-gesture-handler/Swipeable";
@@ -11,6 +11,91 @@ import { IDocument, IField, IImage } from "../../types/entities";
 import DeleteField from "./DeleteField";
 import { COLORS } from "../../styles/colors";
 import { useSQLiteContext } from "expo-sqlite";
+import Animated, {
+    useAnimatedStyle,
+    useSharedValue,
+    withDelay,
+    withTiming,
+} from "react-native-reanimated";
+
+function Field({ field }: { field: IField }) {
+    const scale = useSharedValue(1);
+
+    const timeout = useRef<NodeJS.Timeout>();
+    const copyToClipboard = async (data: string) => {
+        clearTimeout(timeout.current);
+        scale.value = withDelay(500, withTiming(0));
+        await Clipboard.setStringAsync(data);
+        timeout.current = setTimeout(
+            () => (scale.value = withDelay(500, withTiming(1))),
+            1000
+        );
+    };
+
+    const animateStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ scale: scale.value }],
+        };
+    });
+    const animateReverseStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ scale: 1 - scale.value }],
+        };
+    });
+
+    return (
+        <View
+            style={{
+                backgroundColor: COLORS.accent,
+                borderRadius: STYLE_SYSTEM.borderRadius,
+                padding: STYLE_SYSTEM.paddingLg,
+                flexDirection: "row",
+            }}>
+            <View style={{ flex: 1 }}>
+                <Text style={{ color: COLORS.muted }}>{field.key}</Text>
+                <Text style={{ fontSize: 18 }}>{field.value}</Text>
+            </View>
+            <Pressable
+                onPress={() => copyToClipboard(field.value)}
+                style={{
+                    height: "100%",
+                    aspectRatio: 1,
+                    alignSelf: "center",
+                }}>
+                <Animated.View
+                    style={[
+                        animateStyle,
+                        {
+                            position: "absolute",
+                            left: 0,
+                            right: 0,
+                            top: 0,
+                            bottom: 0,
+                            alignItems: "center",
+                            justifyContent: "center",
+                        },
+                    ]}>
+                    <Feather name="copy" size={22} color={COLORS.primary} />
+                </Animated.View>
+                <Animated.View
+                    style={[
+                        animateReverseStyle,
+                        {
+                            position: "absolute",
+                            left: 0,
+                            right: 0,
+                            top: 0,
+                            bottom: 0,
+                            alignItems: "center",
+                            justifyContent: "center",
+                        },
+                    ]}>
+                    <Feather name="check" size={22} color={COLORS.primary} />
+                </Animated.View>
+            </Pressable>
+        </View>
+    );
+}
 
 export default function Fields({
     document,
@@ -24,10 +109,6 @@ export default function Fields({
     const [fields, setFields] = useState<IField[]>([]);
     const [refresh, setRefresh] = useState(false);
     const refreshFields = () => setRefresh((r) => !r);
-
-    const copyToClipboard = async (data: string) => {
-        await Clipboard.setStringAsync(data);
-    };
 
     useEffect(() => {
         async function setup() {
@@ -82,31 +163,7 @@ export default function Fields({
                                 refreshFields={refreshFields}
                             />
                         )}>
-                        <View
-                            style={{
-                                backgroundColor: COLORS.accent,
-                                borderRadius: STYLE_SYSTEM.borderRadius,
-                                padding: STYLE_SYSTEM.paddingLg,
-                                flexDirection: "row",
-                            }}>
-                            <View style={{ flex: 1 }}>
-                                <Text style={{ color: COLORS.muted }}>
-                                    {item.key}
-                                </Text>
-                                <Text style={{ fontSize: 18 }}>
-                                    {item.value}
-                                </Text>
-                            </View>
-                            <Pressable
-                                onPress={() => copyToClipboard(item.value)}
-                                style={{ alignSelf: "center" }}>
-                                <Feather
-                                    name="copy"
-                                    size={22}
-                                    color={COLORS.primary}
-                                />
-                            </Pressable>
-                        </View>
+                        <Field field={item} />
                     </Swipeable>
                 </GestureHandlerRootView>
             )}
