@@ -47,7 +47,7 @@ export default function ImagesViewer({
                     style={{ alignSelf: "center" }}
                     onPress={() =>
                         requestAnimationFrame(() =>
-                            refPagerView.current?.setPage(0)
+                            refPagerView.current?.setPage(currentIdx - 1)
                         )
                     }
                     iconName="chevron-thin-left"
@@ -60,7 +60,7 @@ export default function ImagesViewer({
                     style={{ alignSelf: "center" }}
                     onPress={() =>
                         requestAnimationFrame(() =>
-                            refPagerView.current?.setPage(1)
+                            refPagerView.current?.setPage(currentIdx + 1)
                         )
                     }
                     iconName="chevron-thin-right"
