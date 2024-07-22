@@ -23,7 +23,8 @@ export default function ImagesViewer({
     return (
         <View
             style={{
-                height: 350,
+                height: "100%",
+                maxHeight: 275,
                 width: "100%",
                 gap: STYLE_SYSTEM.padding,
             }}>
@@ -70,10 +71,10 @@ export default function ImagesViewer({
                 onPageSelected={(e: PagerViewOnPageSelectedEvent) =>
                     setCurrentIdx(e.nativeEvent.position)
                 }
+                orientation={"horizontal"}
                 ref={refPagerView as any}
                 style={{
                     flex: 1,
-                    aspectRatio: 4 / 3,
                     maxWidth: "100%",
                 }}
                 initialPage={currentIdx}>
@@ -86,7 +87,6 @@ export default function ImagesViewer({
                             objectFit: "contain",
                             width: "auto",
                             maxWidth: "100%",
-                            maxHeight: 300,
                             borderRadius: STYLE_SYSTEM.borderRadius,
                             aspectRatio: (img.width || 1) / (img.height || 1),
                             flex: 1,

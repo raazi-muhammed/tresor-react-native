@@ -1,42 +1,45 @@
-import { Pressable, Alert } from "react-native";
+import { Alert, Pressable } from "react-native";
 import React from "react";
-import { IDocument } from "../../types/entities";
-import { useSQLiteContext } from "expo-sqlite";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import { COLORS } from "../../styles/colors";
 import { STYLE_SYSTEM } from "../../styles/styleSystem";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { useSQLiteContext } from "expo-sqlite";
+import { IField } from "../../types/entities";
 
-export default function DeleteDocument({
-    document,
-    refreshDocuments,
+export default function DeleteField({
+    field,
+    refreshFields,
 }: {
-    document: IDocument;
-    refreshDocuments: () => void;
+    field: IField;
+    refreshFields: () => void;
 }) {
     const db = useSQLiteContext();
 
-    async function deleteDocument() {
-        await db.runAsync("DELETE FROM documents WHERE id=?;", document.id);
-        refreshDocuments();
+    async function deleteField() {
+        await db.runAsync(
+            "DELETE FROM fields WHERE field_id=?;",
+            field.field_id
+        );
+        refreshFields();
     }
 
     function handlePress() {
         Alert.alert(
             "Are you sure?",
-            `This will delete the ${document.title} document`,
+            `This will delete the ${field.key} document`,
             [
                 {
                     text: "Cancel",
-                    onPress: () => console.log("Cancel Pressed"),
                 },
                 {
                     text: "Delete",
-                    onPress: () => deleteDocument(),
+                    onPress: () => deleteField(),
                     style: "destructive",
                 },
             ]
         );
     }
+
     return (
         <Pressable
             onPress={handlePress}

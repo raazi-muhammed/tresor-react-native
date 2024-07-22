@@ -6,4 +6,7 @@ export const COLORS = {
     muted: "#B1ABBA",
     mutedForeground: "white",
     foreground: "#262626",
+    dangerForeground: "#fff",
+    background: "#fff",
+    danger: "red",
 };

@@ -11,6 +11,9 @@ import Feather from "@expo/vector-icons/Feather";
 import Heading from "../components/general/Heading";
 import * as Clipboard from "expo-clipboard";
 import ImagesViewer from "../components/custom/ImagesViewer";
+import Swipeable from "react-native-gesture-handler/Swipeable";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import DeleteField from "../components/custom/DeleteField";
 
 export default function DocumentInfo({
     route,
@@ -50,12 +53,13 @@ export default function DocumentInfo({
     }, [refresh]);
 
     return (
-        <View style={{ padding: STYLE_SYSTEM.paddingLg }}>
+        <View style={{ padding: STYLE_SYSTEM.paddingLg, flex: 1 }}>
             <ImagesViewer
                 title={doc.title}
                 caption={doc.caption}
                 images={images}
             />
+
             <FlatList
                 keyExtractor={(item) => item.field_id.toString()}
                 data={fields}
@@ -79,30 +83,45 @@ export default function DocumentInfo({
                     marginBottom: STYLE_SYSTEM.padding,
                 }}
                 renderItem={({ item }) => (
-                    <View
-                        key={item.field_id}
-                        style={{
-                            backgroundColor: COLORS.accent,
-                            borderRadius: STYLE_SYSTEM.borderRadius,
-                            padding: STYLE_SYSTEM.paddingLg,
-                            flexDirection: "row",
-                        }}>
-                        <View style={{ flex: 1 }}>
-                            <Text style={{ color: COLORS.muted }}>
-                                {item.key}
-                            </Text>
-                            <Text style={{ fontSize: 18 }}>{item.value}</Text>
-                        </View>
-                        <Pressable
-                            onPress={() => copyToClipboard(item.value)}
-                            style={{ alignSelf: "center" }}>
-                            <Feather
-                                name="copy"
-                                size={22}
-                                color={COLORS.primary}
-                            />
-                        </Pressable>
-                    </View>
+                    <GestureHandlerRootView>
+                        <Swipeable
+                            enableTrackpadTwoFingerGesture
+                            overshootLeft
+                            overshootRight
+                            overshootFriction={8}
+                            renderRightActions={() => (
+                                <DeleteField
+                                    field={item}
+                                    refreshFields={refreshFields}
+                                />
+                            )}>
+                            <View
+                                style={{
+                                    backgroundColor: COLORS.accent,
+                                    borderRadius: STYLE_SYSTEM.borderRadius,
+                                    padding: STYLE_SYSTEM.paddingLg,
+                                    flexDirection: "row",
+                                }}>
+                                <View style={{ flex: 1 }}>
+                                    <Text style={{ color: COLORS.muted }}>
+                                        {item.key}
+                                    </Text>
+                                    <Text style={{ fontSize: 18 }}>
+                                        {item.value}
+                                    </Text>
+                                </View>
+                                <Pressable
+                                    onPress={() => copyToClipboard(item.value)}
+                                    style={{ alignSelf: "center" }}>
+                                    <Feather
+                                        name="copy"
+                                        size={22}
+                                        color={COLORS.primary}
+                                    />
+                                </Pressable>
+                            </View>
+                        </Swipeable>
+                    </GestureHandlerRootView>
                 )}
                 ItemSeparatorComponent={() => (
                     <View style={{ height: STYLE_SYSTEM.padding }} />

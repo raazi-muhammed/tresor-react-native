@@ -1,12 +1,12 @@
 import {
     Pressable,
     Modal,
-    TextInput,
     StyleSheet,
     KeyboardAvoidingView,
     Platform,
     View,
     Text,
+    ScrollView,
 } from "react-native";
 import React, { useState } from "react";
 import Entypo from "@expo/vector-icons/Entypo";
@@ -18,6 +18,7 @@ import ImageSelector from "./ImageSelector";
 import { useSQLiteContext } from "expo-sqlite";
 import { IImage } from "../../types/entities";
 import IconButton from "../general/IconButton";
+import TextInput from "../general/TextInput";
 
 export default function AddDocument() {
     const db = useSQLiteContext();
@@ -89,33 +90,31 @@ export default function AddDocument() {
                 onRequestClose={() => setIsModelVisible(false)}
                 animationType="slide"
                 presentationStyle="pageSheet">
-                <KeyboardAvoidingView
-                    keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
-                    style={{ padding: STYLE_SYSTEM.paddingLg, gap: 12 }}
-                    behavior="position">
+                <ScrollView style={{ padding: STYLE_SYSTEM.paddingLg }}>
                     <IconButton
                         iconName="cross"
                         onPress={() => setIsModelVisible(false)}
                     />
-                    <Heading style={{ marginTop: STYLE_SYSTEM.padding }}>
-                        Add document
-                    </Heading>
-                    <TextInput
-                        onChangeText={setTitle}
-                        value={title}
-                        placeholder="title"
-                        style={styles.input}
-                    />
-                    <TextInput
-                        onChangeText={setCaption}
-                        value={caption}
-                        placeholder="caption"
-                        style={styles.input}
-                    />
+                    <Heading>Add document</Heading>
+                    <KeyboardAvoidingView
+                        keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+                        behavior="position">
+                        <TextInput
+                            onChangeText={setTitle}
+                            value={title}
+                            placeholder="title"
+                        />
+                        <TextInput
+                            onChangeText={setCaption}
+                            value={caption}
+                            placeholder="caption"
+                        />
+                    </KeyboardAvoidingView>
                     <View
                         style={{
                             flexDirection: "row",
                             gap: STYLE_SYSTEM.padding,
+                            marginBottom: 8,
                         }}>
                         <ImageSelector
                             image={frontImage}
@@ -130,7 +129,7 @@ export default function AddDocument() {
                     </View>
                     {!!error && <Text style={{ color: "red" }}>{error}</Text>}
                     <Button title="Add document" onPress={handleAddDocument} />
-                </KeyboardAvoidingView>
+                </ScrollView>
             </Modal>
         </>
     );
@@ -147,13 +146,6 @@ const styles = StyleSheet.create({
         height: 32,
     },
     buttonIcon: { margin: "auto" },
-    input: {
-        backgroundColor: COLORS.accent,
-        padding: STYLE_SYSTEM.paddingLg,
-        marginBottom: STYLE_SYSTEM.paddingLg,
-        borderRadius: STYLE_SYSTEM.borderRadius,
-        fontSize: 16,
-    },
     image: {
         width: 200,
         height: 200,

@@ -7,7 +7,6 @@ import AddDocument from "./components/custom/AddDocument";
 import { COLORS } from "./styles/colors";
 import { DbProvider } from "./db/Provider";
 import { IDocument } from "./types/entities";
-import DeleteDocument from "./components/custom/DeleteDocument";
 
 export type ParamListBase = {
     Tresor: {};
@@ -28,6 +27,7 @@ export default function App() {
                         component={HomeScreen as any}
                         options={{
                             headerLargeTitle: true,
+                            headerShadowVisible: false,
                             headerTitleStyle: {
                                 color: COLORS.primary,
                             },
@@ -39,9 +39,6 @@ export default function App() {
                         component={DocumentInfo as any}
                         options={({ route }) => ({
                             title: route.params.doc.title,
-                            headerRight: () => (
-                                <DeleteDocument document={route.params.doc} />
-                            ),
                         })}
                     />
                 </Stack.Navigator>

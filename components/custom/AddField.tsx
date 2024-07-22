@@ -1,11 +1,13 @@
 import {
     Pressable,
     Modal,
-    TextInput,
     StyleSheet,
     Platform,
     Text,
     KeyboardAvoidingView,
+    ScrollView,
+    Dimensions,
+    SafeAreaView,
 } from "react-native";
 import React, { useState } from "react";
 import Entypo from "@expo/vector-icons/Entypo";
@@ -17,6 +19,7 @@ import { useSQLiteContext } from "expo-sqlite";
 import { IImage } from "../../types/entities";
 import IconButton from "../general/IconButton";
 import ImagesViewer from "./ImagesViewer";
+import TextInput from "../general/TextInput";
 
 export default function AddField({
     documentId,
@@ -87,13 +90,7 @@ export default function AddField({
                 onRequestClose={() => setIsModelVisible(false)}
                 animationType="slide"
                 presentationStyle="pageSheet">
-                <KeyboardAvoidingView
-                    keyboardVerticalOffset={Platform.OS === "ios" ? 75 : 0}
-                    style={{
-                        padding: STYLE_SYSTEM.paddingLg,
-                        gap: 12,
-                    }}
-                    behavior="position">
+                <ScrollView style={{ padding: STYLE_SYSTEM.paddingLg }}>
                     <IconButton
                         onPress={() => setIsModelVisible(false)}
                         iconName="cross"
@@ -106,21 +103,25 @@ export default function AddField({
                     <Heading style={{ marginTop: STYLE_SYSTEM.padding }}>
                         Add field
                     </Heading>
-                    <TextInput
-                        onChangeText={setKey}
-                        value={key}
-                        placeholder="key"
-                        style={styles.input}
-                    />
-                    <TextInput
-                        onChangeText={setValue}
-                        value={value}
-                        placeholder="value"
-                        style={styles.input}
-                    />
-                    {!!error && <Text style={{ color: "red" }}>{error}</Text>}
-                    <Button title="Add field" onPress={handleAddDocument} />
-                </KeyboardAvoidingView>
+                    <KeyboardAvoidingView
+                        keyboardVerticalOffset={100}
+                        behavior="padding">
+                        <TextInput
+                            onChangeText={setKey}
+                            value={key}
+                            placeholder="key"
+                        />
+                        <TextInput
+                            onChangeText={setValue}
+                            value={value}
+                            placeholder="value"
+                        />
+                        {!!error && (
+                            <Text style={{ color: "red" }}>{error}</Text>
+                        )}
+                        <Button title="Add field" onPress={handleAddDocument} />
+                    </KeyboardAvoidingView>
+                </ScrollView>
             </Modal>
         </>
     );
@@ -137,13 +138,6 @@ const styles = StyleSheet.create({
         height: 26,
     },
     buttonIcon: { margin: "auto" },
-    input: {
-        backgroundColor: COLORS.accent,
-        padding: STYLE_SYSTEM.paddingLg,
-        marginBottom: STYLE_SYSTEM.paddingLg,
-        borderRadius: STYLE_SYSTEM.borderRadius,
-        fontSize: 16,
-    },
     image: {
         width: 200,
         height: 200,

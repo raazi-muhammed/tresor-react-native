@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.secondary,
     },
     container: {
-        aspectRatio: 1,
+        aspectRatio: 4 / 3,
         borderWidth: 1,
         width: "100%",
         flex: 1,

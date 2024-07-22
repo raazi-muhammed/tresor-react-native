@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
         width: "100%",
         padding: 8,
         borderRadius: 12,
-        marginBottom: 8,
         flex: 1,
         gap: 8,
         flexDirection: "row",
