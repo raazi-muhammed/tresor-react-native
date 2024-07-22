@@ -15,7 +15,7 @@ export default function Heading({
         case "main":
             return <Text style={[styles.main, style]}>{children}</Text>;
         default:
-            return <Text style={[styles.default, style]}>{children}</Text>;
+            return <Text style={[style, styles.default]}>{children}</Text>;
     }
 }
 

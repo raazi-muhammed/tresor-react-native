@@ -3,12 +3,11 @@ import {
     Modal,
     TextInput,
     StyleSheet,
-    KeyboardAvoidingView,
     Platform,
     Text,
-    Image,
+    KeyboardAvoidingView,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Entypo from "@expo/vector-icons/Entypo";
 import { COLORS } from "../../styles/colors";
 import { STYLE_SYSTEM } from "../../styles/styleSystem";
@@ -16,6 +15,8 @@ import Heading from "../general/Heading";
 import Button from "../general/Button";
 import { useSQLiteContext } from "expo-sqlite";
 import { IImage } from "../../types/entities";
+import IconButton from "../general/IconButton";
+import ImagesViewer from "./ImagesViewer";
 
 export default function AddField({
     documentId,
@@ -34,12 +35,6 @@ export default function AddField({
     const [key, setKey] = useState("");
     const [value, setValue] = useState("");
     const [error, setError] = useState<string | null>(null);
-
-    const [currentIdx, setCurrentIdx] = useState(0);
-    const [currentPreview, setCurrentPreview] = useState(images[currentIdx]);
-    useEffect(() => {
-        setCurrentPreview(images[currentIdx]);
-    }, [currentIdx]);
 
     const handleAddDocument = async () => {
         if (!key || !value) {
@@ -82,16 +77,10 @@ export default function AddField({
                     />
                 </Pressable>
             ) : (
-                <Pressable
-                    style={styles.buttonBg}
-                    onPress={() => setIsModelVisible(true)}>
-                    <Entypo
-                        name="plus"
-                        size={22}
-                        color={COLORS.primaryForeground}
-                        style={styles.buttonIcon}
-                    />
-                </Pressable>
+                <IconButton
+                    onPress={() => setIsModelVisible(true)}
+                    iconName="plus"
+                />
             )}
             <Modal
                 visible={isModelVisible}
@@ -99,49 +88,24 @@ export default function AddField({
                 animationType="slide"
                 presentationStyle="pageSheet">
                 <KeyboardAvoidingView
-                    keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
-                    style={{ padding: STYLE_SYSTEM.paddingLg, gap: 12 }}
-                    behavior="padding">
-                    <Pressable
-                        style={[
-                            styles.buttonBg,
-                            {
-                                width: 24,
-                                height: 24,
-                                backgroundColor: COLORS.muted,
-                            },
-                        ]}
-                        onPress={() => setIsModelVisible(false)}>
-                        <Entypo
-                            name="cross"
-                            size={18}
-                            color={COLORS.mutedForeground}
-                            style={styles.buttonIcon}
-                        />
-                    </Pressable>
+                    keyboardVerticalOffset={Platform.OS === "ios" ? 75 : 0}
+                    style={{
+                        padding: STYLE_SYSTEM.paddingLg,
+                        gap: 12,
+                    }}
+                    behavior="position">
+                    <IconButton
+                        onPress={() => setIsModelVisible(false)}
+                        iconName="cross"
+                    />
+                    <ImagesViewer
+                        title={"Document"}
+                        caption="Scroll to change"
+                        images={images}
+                    />
                     <Heading style={{ marginTop: STYLE_SYSTEM.padding }}>
                         Add field
                     </Heading>
-                    <Pressable
-                        onPress={() =>
-                            setCurrentIdx((ci) =>
-                                ci + 1 < images.length ? ci + 1 : 0
-                            )
-                        }>
-                        <Image
-                            source={{ uri: currentPreview.uri }}
-                            style={{
-                                width: "100%",
-                                aspectRatio:
-                                    currentPreview.width /
-                                    currentPreview.height,
-                                borderRadius: STYLE_SYSTEM.borderRadius,
-                            }}
-                        />
-                        <Text style={{ paddingTop: 4, color: COLORS.muted }}>
-                            Tap to change preview
-                        </Text>
-                    </Pressable>
                     <TextInput
                         onChangeText={setKey}
                         value={key}
@@ -155,7 +119,7 @@ export default function AddField({
                         style={styles.input}
                     />
                     {!!error && <Text style={{ color: "red" }}>{error}</Text>}
-                    <Button title="Add document" onPress={handleAddDocument} />
+                    <Button title="Add field" onPress={handleAddDocument} />
                 </KeyboardAvoidingView>
             </Modal>
         </>
@@ -176,6 +140,7 @@ const styles = StyleSheet.create({
     input: {
         backgroundColor: COLORS.accent,
         padding: STYLE_SYSTEM.paddingLg,
+        marginBottom: STYLE_SYSTEM.paddingLg,
         borderRadius: STYLE_SYSTEM.borderRadius,
         fontSize: 16,
     },

@@ -1,4 +1,4 @@
-import { View, Text, Image, Pressable, FlatList } from "react-native";
+import { View, Text, Pressable, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import { RouteProp } from "@react-navigation/native";
 import { ParamListBase } from "../App";
@@ -51,8 +51,13 @@ export default function DocumentInfo({
 
     return (
         <View style={{ padding: STYLE_SYSTEM.paddingLg }}>
-            <ImagesViewer images={images} />
+            <ImagesViewer
+                title={doc.title}
+                caption={doc.caption}
+                images={images}
+            />
             <FlatList
+                keyExtractor={(item) => item.field_id.toString()}
                 data={fields}
                 ListHeaderComponent={() => (
                     <View
@@ -60,12 +65,7 @@ export default function DocumentInfo({
                             flexDirection: "row",
                             justifyContent: "space-between",
                         }}>
-                        <Heading
-                            style={{
-                                marginTop: 32,
-                            }}>
-                            Fields
-                        </Heading>
+                        <Heading style={{ marginTop: 12 }}>Fields</Heading>
                         {!!fields.length && (
                             <AddField
                                 documentId={doc.id}
@@ -93,7 +93,9 @@ export default function DocumentInfo({
                             </Text>
                             <Text style={{ fontSize: 18 }}>{item.value}</Text>
                         </View>
-                        <Pressable style={{ alignSelf: "center" }}>
+                        <Pressable
+                            onPress={() => copyToClipboard(item.value)}
+                            style={{ alignSelf: "center" }}>
                             <Feather
                                 name="copy"
                                 size={22}

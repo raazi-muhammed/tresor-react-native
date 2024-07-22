@@ -17,12 +17,13 @@ import Button from "../general/Button";
 import ImageSelector from "./ImageSelector";
 import { useSQLiteContext } from "expo-sqlite";
 import { IImage } from "../../types/entities";
+import IconButton from "../general/IconButton";
 
 export default function AddDocument() {
     const db = useSQLiteContext();
 
     const [isModelVisible, setIsModelVisible] = useState(false);
-    const [title, setTitle] = useState("tet");
+    const [title, setTitle] = useState("");
     const [caption, setCaption] = useState("");
 
     const [frontImage, setFrontImage] = useState<IImage | null>(null);
@@ -65,7 +66,7 @@ export default function AddDocument() {
 
         setError(null);
         setIsModelVisible(false);
-        setTitle("test");
+        setTitle("");
         setCaption("");
         setFrontImage(null);
         setBackImage(null);
@@ -91,24 +92,11 @@ export default function AddDocument() {
                 <KeyboardAvoidingView
                     keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
                     style={{ padding: STYLE_SYSTEM.paddingLg, gap: 12 }}
-                    behavior="padding">
-                    <Pressable
-                        style={[
-                            styles.buttonBg,
-                            {
-                                width: 24,
-                                height: 24,
-                                backgroundColor: COLORS.muted,
-                            },
-                        ]}
-                        onPress={() => setIsModelVisible(false)}>
-                        <Entypo
-                            name="cross"
-                            size={18}
-                            color={COLORS.mutedForeground}
-                            style={styles.buttonIcon}
-                        />
-                    </Pressable>
+                    behavior="position">
+                    <IconButton
+                        iconName="cross"
+                        onPress={() => setIsModelVisible(false)}
+                    />
                     <Heading style={{ marginTop: STYLE_SYSTEM.padding }}>
                         Add document
                     </Heading>
@@ -162,6 +150,7 @@ const styles = StyleSheet.create({
     input: {
         backgroundColor: COLORS.accent,
         padding: STYLE_SYSTEM.paddingLg,
+        marginBottom: STYLE_SYSTEM.paddingLg,
         borderRadius: STYLE_SYSTEM.borderRadius,
         fontSize: 16,
     },

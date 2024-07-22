@@ -16,7 +16,7 @@ export default function IconButton({
     style,
 }: {
     onPress: (event: GestureResponderEvent) => void;
-    iconName: "plus" | "chevron-thin-right" | "chevron-thin-left";
+    iconName: "plus" | "chevron-thin-right" | "chevron-thin-left" | "cross";
     style?: StyleProp<ViewStyle>;
 }) {
     return (
@@ -33,7 +33,7 @@ export default function IconButton({
             onPress={onPress}>
             <Entypo
                 name={iconName}
-                size={12}
+                size={14}
                 color={COLORS.mutedForeground}
                 style={styles.buttonIcon}
             />

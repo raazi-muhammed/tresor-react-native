@@ -8,7 +8,15 @@ import PagerView, {
 } from "react-native-pager-view";
 import IconButton from "../general/IconButton";
 
-export default function ImagesViewer({ images }: { images: IImage[] }) {
+export default function ImagesViewer({
+    images,
+    title,
+    caption,
+}: {
+    images: IImage[];
+    title: string;
+    caption?: string;
+}) {
     const [currentIdx, setCurrentIdx] = useState(0);
     const refPagerView = useRef<{ setPage: (n: number) => void }>();
 
@@ -28,9 +36,11 @@ export default function ImagesViewer({ images }: { images: IImage[] }) {
                 }}>
                 <View style={{ flex: 1 }}>
                     <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                        Credit card
+                        {title}
                     </Text>
-                    <Text style={{ color: COLORS.muted }}>ending with..</Text>
+                    {caption && (
+                        <Text style={{ color: COLORS.muted }}>{caption}</Text>
+                    )}
                 </View>
                 <IconButton
                     style={{ alignSelf: "center" }}
